@@ -1,0 +1,67 @@
+import java.security.SecureRandom;
+import java.util.Scanner;
+public  class PasswordGenerator {
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
+        int minLength = 6;
+        int maxLength = 20;
+        int length;
+
+        while (true){
+            System.out.print("Enter your desired password length(6-20): ");
+            length = scanner.nextInt();
+                scanner.nextLine();
+            if (length <= maxLength && length >= minLength){
+                
+                break;
+            }
+            else {
+                System.out.println("Error");
+            }
+        }
+        System.out.println("Add numbers? Print Yes or No:");
+        boolean includeNumbers = scanner.nextLine().equalsIgnoreCase("Yes");
+        System.out.println("Add uppercase letters? Print Yes or No:");
+        boolean includeUpperCase = scanner.nextLine().equalsIgnoreCase("Yes");
+        System.out.println("Add symbols? Print Yes or No:");
+        boolean includeSymbols= scanner.nextLine().equalsIgnoreCase("Yes");
+        String password = generatePassword ( length, includeSymbols, includeUpperCase, includeNumbers);
+        System.out.println("Generated Password: " + password);
+
+        scanner.close();
+
+    }
+public static String generatePassword(int length, boolean includeNumbers, boolean includeSymbols, boolean includeUpperCase){
+    String lowerCase =  "abcdefghijklmnopqrstuvwxyz";
+    String numbers = "0123456789";
+    String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    String specialCharacters = "!@#$%^&*";
+
+String charPool = lowerCase;
+if (includeUpperCase){
+    charPool += upperCase;
+
+}
+if (includeNumbers){
+    charPool += numbers;
+
+}
+if (includeSymbols){
+    charPool += specialCharacters ;
+}
+if (charPool.isEmpty()) {
+    System.out.println("Error: At least one character type must be included!");
+    return "";
+}
+SecureRandom random = new SecureRandom();
+StringBuilder password = new StringBuilder();
+
+for (int i = 0; i < length; i++) {
+    int randomIndex = random.nextInt(charPool.length());
+    password.append(charPool.charAt(randomIndex));
+}
+
+return password.toString();
+}
+
+}
